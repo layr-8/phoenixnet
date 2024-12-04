@@ -31,11 +31,11 @@ var logger = new LoggerConfiguration()
     .CreateLogger();
 
 // Initialize socket connection
-var socket = new Socket("ws://your-server/socket", new SocketOptions
+var socket = new Socket("ws://your-server/socket", PhoenixNet.Configuration.CreateLogger(logger), new SocketOptions
 {
     HeartbeatIntervalMs = 30000,
     ApiKey = "your-api-key"
-}, PhoenixNet.Configuration.CreateLogger(logger));
+});
 
 // Connect to socket
 await socket.ConnectAsync();
