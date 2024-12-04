@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <PackageId>PhoenixNet</PackageId>
+	  <Version>1.0.3</Version>
+	  <Authors>Pace Davis</Authors>
+	  <Company>Protocol Technologies, Inc</Company>
+	  <Description>Phoenix Channel WebSocket client library for .NET</Description>
+	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
+	  <PackageProjectUrl>https://github.com/layr-8/phoenixnet</PackageProjectUrl>
+	  <RepositoryUrl>https://github.com/layr-8/phoenixnet</RepositoryUrl>
+	  <PackageTags>websocket;phoenixframework;</PackageTags>
+	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Title>PhoenixNet : Phoenix WebSocket client library for .NET</Title>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Serilog" Version="4.1.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+  </ItemGroup>
+
+</Project>
