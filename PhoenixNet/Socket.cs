@@ -136,20 +136,38 @@ namespace  PhoenixNet
 
         private async Task StartReceiveLoop()
         {
-            var buffer = new byte[4096];
             try
             {
                 _logger.Debug("Starting receive loop...");
                 while (conn?.State == WebSocketState.Open)
                 {
                     _logger.Debug("Waiting for message...");
-                    var result = await conn.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+                    
+                    // Create a memory stream to accumulate message parts
+                    using var messageStream = new System.IO.MemoryStream();
+                    var buffer = new byte[16 * 1024]; // 16KB buffer for each read
+                    WebSocketReceiveResult result;
+                    
+                    // Keep receiving until we get a complete message
+                    do
+                    {
+                        result = await conn.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+                        
+                        if (result.MessageType == WebSocketMessageType.Text)
+                        {
+                            await messageStream.WriteAsync(buffer, 0, result.Count);
+                        }
+                    } 
+                    while (!result.EndOfMessage);
+                    
                     _logger.Debug($"Received message type: {result.MessageType}");
 
                     if (result.MessageType == WebSocketMessageType.Text)
                     {
-                        var message = Encoding.UTF8.GetString(buffer, 0, result.Count);
-                        _logger.Debug($"Raw message received: {message}");
+                        // Get full message bytes
+                        var messageBytes = messageStream.ToArray();
+                        var message = Encoding.UTF8.GetString(messageBytes);
+                        _logger.Debug($"Raw message received (length: {message.Length}): {message}");
                         OnConnMessage(message);
                     }
                     else if (result.MessageType == WebSocketMessageType.Close)
